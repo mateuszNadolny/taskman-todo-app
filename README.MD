@@ -4,7 +4,7 @@ This app was designed and coded from scratch by [mateuszNadolny](https://github.
 
 ## Links
 
-- Solution URL: [GitHub repo](https://github.com/mateuszNadolny/taskman-todo-app)
+- Code repo URL: [GitHub repo](https://github.com/mateuszNadolny/taskman-todo-app)
 - Live Site URL: [GitHub pages](blank)
 
 ## Built with:
