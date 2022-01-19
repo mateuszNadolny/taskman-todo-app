@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/styles.css">
+    <!-- <script defer src="scripts/buttonHandlerScript.js"></script> -->
+    <script src="scripts/app.js" defer></script>
+    <title>taskman</title>
+</head>
+
+<body>
+
+    <header>
+        <h2 class="header">taskman</h2>
+        <div class="add-task-div">
+            <button class="render-adding-task-btn">+</button>
+            <p class="add-task-paragraph">add new task</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="adding-task-wrapper">
+            <div class="adding-task-input-wrapper">
+                <input class="adding-task-input mobile-adding-task-input" type="text" placeholder="let's do something exciting!" maxlength="50">
+            </div>
+            <div class="operating-btns">
+                <button class="add-btn operating-task-btn mobile-add-btn">add</button>
+                <button class="cancel-btn operating-task-btn ">cancel</button>
+            </div>
+        </div>
+
+        <div class="side-menu">
+            <h2 class="side-logo header">taskman</h2>
+            <div class="side-adding-task-wrapper">
+                <input class="adding-task-input desktop-adding-task-input side-adding-task-input side-menu-element" type="text"
+                    placeholder="let's do something exciting!" maxlength="50">
+                <button class="side-adding-task-btn add-btn side-menu-element">add new task</button>
+            </div>
+
+            <div class="side-filter-btns">
+                <button data-type="all" class="filter-all filter-btn active side-filter-btn side-menu-element">view all</button>
+                <button data-type="active" class="filter-active filter-btn side-filter-btn side-menu-element">view active</button>
+                <button data-type="completed" class="filter-completed filter-btn side-filter-btn side-menu-element"> view completed</button>
+                <button class="filter-delete-p side-filter-delete side-filter-btn side-menu-element">clear completed</button>
+
+            </div>
+            <p class="signature desktop-signature">designed & coded by <a href="https://github.com/mateuszNadolny"
+                    target="_blank">mateuszNadolny</a></p>
+        </div>
+
+        <div class="tasks-wrapper">
+            <ul class="tasks-ul">
+                <template class="temp-li">
+                    <li class="tasks-li visible">
+                        <button class="tasks-checkbox "></button>
+                        <p class="tasks-paragraph "></p>
+                    </li>
+                </template>
+            </ul>
+        </div>
+
+        <div class="filter-wrapper">
+            <p data-type="all" class="filter-all filter-btn active">all</p>
+            <p data-type="active" class="filter-active filter-btn">active</p>
+            <p data-type="completed" class="filter-completed filter-btn">completed</p>
+            <div class="filter-delete-div">
+                <p class="filter-delete-p">delete completed</p>
+            </div>
+
+        </div>
+
+        <footer>
+            <p class="signature mobile-signature">designed & coded by <a href="https://github.com/mateuszNadolny"
+                    target="_blank">mateuszNadolny</a></p>
+        </footer>
+    </main>
+
+</body>
+
+</html>
