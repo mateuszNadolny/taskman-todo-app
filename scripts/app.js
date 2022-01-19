@@ -115,7 +115,7 @@ class ToDoList {
         //Creating new task object with user input
         //validation of input
         let inputTextValue = document.querySelector(`.${deviceSize}-adding-task-input`).value;
-        if (inputTextValue === '') {
+        if (inputTextValue === '' || inputTextValue.trim() === '') {
             return;
         } else {
             const task = new ToDoTask(inputTextValue);
