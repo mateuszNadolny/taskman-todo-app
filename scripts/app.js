@@ -1,234 +1,147 @@
-const renderAddingTaskBtn = document.querySelector('.render-adding-task-btn');
-const cancelBtn = document.querySelector('.cancel-btn');
-const addBtns = document.querySelectorAll('.add-btn');
-const filterBtns = document.querySelectorAll('.filter-btn');
-const deleteBtns = document.querySelectorAll('.filter-delete-p');
+const addBtn = document.querySelector('.add-task-btn');
+const taskInput = document.querySelector('.user-input');
+const taskUl = document.querySelector('ul');
 
-const allTasks = [];
+class Task {
+    constructor(content, isCompleted, id) {
+        this.content = content;
+        this.isCompleted = isCompleted;
+        this.id = id;
+    }
+}
 
-class UI {
-    static checkScreenSize() {
-        let deviceSize = 0;
-        if (window.screen.width >= 1200) {
-            deviceSize = 'desktop';
-        } else {
-            deviceSize = 'mobile'
-        }
+class TaskList {
+    constructor() {
+        this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        this.completedTasks = [];
+        this.acviteTasks = [];
+        this.render(this.tasks);
+        this.filterBtnsHandler();
 
-        return deviceSize;
+        addBtn.addEventListener('click', this.addTask.bind(this));
     }
 
-    //toggling input wrapper on mobile devices
-    static toggleMobileInputWrapper() {
-        const paragraph = document.querySelector('.add-task-paragraph');
-        const addingWrapper = document.querySelector('.adding-task-wrapper');
+    addTask() {
+        let content;
+        let currentId;
 
-        renderAddingTaskBtn.classList.toggle('add-task-btn-translation');
-        paragraph.classList.toggle('add-task-paragraph-translation');
-        addingWrapper.classList.toggle('adding-task-wrapper-active');
-
-        if (paragraph.textContent === 'add new task') {
-            paragraph.textContent = 'in progress...';
-        } else {
-            paragraph.textContent = 'add new task';
-        };
-    }
-
-    // Clearing text inputs after adding new tasks
-    static clearInput() {
-        const inputs = document.querySelectorAll('.adding-task-input');
-        inputs.forEach(input => {
-            input.value = '';
-        })
-    }
-
-    static toggleTaskState(e) {
-        if (e.target && e.target.classList.contains('tasks-checkbox')) {
-            e.target.classList.toggle('tasks-checkbox-checked');
-            e.target.closest('li').classList.toggle('tasks-li-checked');
-        }
-
-    }
-
-    static displayAllTasks() {
-        allTasks.forEach(task => {
-            task.classList.add('visible');
-            task.classList.remove('invisible');
-        });
-    }
-
-    static displayActiveTasks() {
-        allTasks.forEach(task => {
-            if (task.classList.contains('tasks-li-checked')) {
-                task.classList.remove('visible');
-                task.classList.add('invisible');
-            } else {
-                task.classList.remove('invisible');
-                task.classList.add('visible');
-            }
-        });
-    }
-
-    static displayCompletedTasks() {
-        allTasks.forEach(task => {
-            if (task.classList.contains('tasks-li-checked')) {
-                task.classList.remove('invisible');
-                task.classList.add('visible');
-            } else {
-                task.classList.remove('visible');
-                task.classList.add('invisible');
-            }
-        });
-    }
-
-    static toggleFitlerBtnState(e) {
-        filterBtns.forEach(btn => {
-            btn.classList.remove('active');
-        });
-        e.target.classList.add('active');
-    }
-
-    static resetFilterBtnState() {
-        filterBtns.forEach(btn => {
-            if (btn.dataset.type === 'all') {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        })
-    }
-};
-
-
-//ToDoTask class - class that represent a single task
-class ToDoTask {
-    constructor(text) {
-        this.text = text;
-    }
-};
-
-//ToDoList class - class that represent a task list
-class ToDoList {
-    constructor() {}
-    //Creating new ToDoTask object
-    createNewTask(deviceSize) {
-        //Creating new task object with user input
-        //validation of input
-        let inputTextValue = document.querySelector(`.${deviceSize}-adding-task-input`).value;
-        if (inputTextValue === '' || inputTextValue.trim() === '') {
+        if ((taskInput.value.trim()).length === 0) {
+            this.renderPopup(`Task can't be empty`);
+            setTimeout(this.renderPopup, 2000);
             return;
+        } else if ((taskInput.value.trim()).length >= 55) {
+            content = (taskInput.value.trim()).substring(0, 45);
+            this.renderPopup(`Task can't take more than 55 words`);
+            setTimeout(this.renderPopup, 3000);
         } else {
-            const task = new ToDoTask(inputTextValue);
-            return task;
+            content = taskInput.value.trim();
+        }
+
+
+        if (this.tasks.length === 0) {
+            currentId = 1;
+        } else {
+            currentId = this.tasks[this.tasks.length - 1].id + 1;
+        }
+
+        this.tasks.push(new Task(content, false, currentId));
+        this.updateTaskInLocalStorage();
+        taskInput.value = '';
+        this.render(this.tasks);
+    }
+
+    render(selectedTasks) {
+        taskUl.innerHTML = '';
+        this.createTaskList(selectedTasks);
+        this.displayTaskList(this.tasks);
+    }
+
+    renderPopup(message) {
+        const popup = document.querySelector('.popup');
+        const text = popup.querySelector('p');
+        text.textContent = message;
+        popup.classList.toggle('popup-active');
+    }
+
+    createTaskList(selectedTasks) {
+        selectedTasks.forEach(task => {
+            let taskEl = document.createElement('li');
+            let checkbox = document.createElement('input');
+            let content = document.createElement('p');
+            let deleteBtn = document.createElement('button');
+
+            taskEl.classList.add('task-li');
+
+            checkbox.type = 'checkbox';
+            checkbox.classList.add('task-checkbox');
+            checkbox.checked = task.isCompleted;
+            checkbox.addEventListener('change', (event) => {
+                task.isCompleted = !task.isCompleted;
+                this.updateTaskInLocalStorage()
+            });
+
+            content.classList.add('task-content');
+            content.textContent = task.content;
+
+            deleteBtn.classList.add('task-delete-btn');
+            deleteBtn.textContent = 'x';
+            deleteBtn.addEventListener('click', () => {
+                taskUl.removeChild(taskEl);
+                this.tasks = this.tasks.filter(currentTask => {
+                    return currentTask.id !== task.id;
+                })
+                this.updateTaskInLocalStorage();
+                console.log(this.tasks);
+                this.displayTaskList(this.tasks);
+            });
+
+            taskEl.appendChild(checkbox);
+            taskEl.appendChild(content);
+            taskEl.appendChild(deleteBtn);
+            taskUl.appendChild(taskEl);
+        })
+    }
+
+    displayTaskList(selectedTasks) {
+        const ulWrapper = document.querySelector('.ul-wrapper');
+        if (selectedTasks.length < 1) {
+            ulWrapper.classList.add('invisible');
+        } else {
+            ulWrapper.classList.remove('invisible');
         }
     }
 
-    //Rendering new ToDoTask object on the UI and adding it to tasks array
-    renderNewTask(task) {
-        const liWrapper = document.querySelector('.tasks-ul');
-        const liTemplate = document.querySelector('.temp-li');
-        const li = liTemplate.content.cloneNode(true);
-        li.querySelector('.tasks-paragraph').textContent = task.text;
-        liWrapper.append(li);
-        UI.displayAllTasks();
-        UI.clearInput();
-        UI.toggleMobileInputWrapper();
-        UI.resetFilterBtnState();
-        allTasks.push(liWrapper.querySelector('li:last-of-type'));
+    filterBtnsHandler() {
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switch (btn.dataset.type) {
+                    case 'all':
+                        this.render(this.tasks);
+                        this.displayTaskList(this.tasks);
+                        break;
+                    case 'active':
+                        this.acviteTasks = this.tasks.filter(task => task.isCompleted === false)
+                        this.render(this.acviteTasks);
+                        this.displayTaskList(this.acviteTasks);
+                        break;
+                    case 'completed':
+                        this.completedTasks = this.tasks.filter(task => task.isCompleted === true)
+                        this.render(this.completedTasks);
+                        this.displayTaskList(this.completedTasks);
+
+                        break;
+                    default:
+                        break;
+                }
+            })
+        })
     }
 
-    filterTask(filterBtn) {
-        const btnType = filterBtn.dataset.type;
-        switch (btnType) {
-            case 'all':
-                UI.displayAllTasks();
-                break;
-            case 'active':
-                UI.displayActiveTasks();
-                break;
-            case 'completed':
-                UI.displayCompletedTasks();
-                break;
-            default:
-                break;
-        };
+    updateTaskInLocalStorage() {
+        localStorage.setItem('tasks', JSON.stringify(this.tasks));
     }
+}
 
-    deleteCompleted() {
-        allTasks.forEach(task => {
-            if (task.classList.contains('tasks-li-checked')) {
-                // Storage.removefromLocalTasks(task);
-                task.remove();
-            };
-        });
-    }
-};
-
-//Storage class - class that is responsible for saving tasks in local storage
-// class Storage {
-//     static checkLocalTasks() {
-//         let tasks;
-//         if (localStorage.getItem('tasks') === null) {
-//             tasks = [];
-//         } else {
-//             tasks = JSON.parse(localStorage.getItem('tasks'));
-//         }
-//         console.log(tasks);
-//         return tasks;
-//     }
-
-//     static saveToLocalTasks(task) {
-//         let tasks = Storage.checkLocalTasks();
-//         tasks.push(task);
-//         localStorage.setItem('tasks', JSON.stringify(tasks));
-//     }
-
-//     static removefromLocalTasks(task) {
-//         let tasks = Storage.checkLocalTasks();
-//         tasks.pop(task);
-//         localStorage.setItem('tasks', JSON.stringify(tasks));
-//     }
-
-//     static renderLocalTasks() {
-
-//     }
-// }
-
-// Storage.renderLocalTasks();
-
-const toDoList = new ToDoList();
-
-renderAddingTaskBtn.addEventListener('click', UI.toggleMobileInputWrapper);
-
-cancelBtn.addEventListener('click', UI.toggleMobileInputWrapper);
-
-//using event delegation to change the visual state of task
-document.addEventListener('click', UI.toggleTaskState);
-
-addBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const deviceSize = UI.checkScreenSize();
-        const taskEl = toDoList.createNewTask(deviceSize);
-        toDoList.renderNewTask(taskEl);
-    })
-});
-
-//Adding new tasks with 'Enter' key
-document.querySelector('.side-menu').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        const deviceSize = UI.checkScreenSize();
-        const taskEl = toDoList.createNewTask(deviceSize);
-        toDoList.renderNewTask(taskEl);
-    }
-})
-
-filterBtns.forEach(filterBtn => {
-    filterBtn.addEventListener('click', UI.toggleFitlerBtnState);
-    filterBtn.addEventListener('click', () => {
-        toDoList.filterTask(filterBtn);
-    });
-})
-
-deleteBtns.forEach(deleteBtn => {
-    deleteBtn.addEventListener('click', toDoList.deleteCompleted);
-})
+const taskList = new TaskList();
