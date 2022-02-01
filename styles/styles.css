@@ -48,7 +48,7 @@ main {
 }
 
 svg {
-    position: absolute;
+    position: fixed;
     z-index: -1;
     width: 100%;
     fill: var(--primary);
@@ -241,7 +241,7 @@ input[type="text"]::placeholder {
 /* ---> TASKS SECTION <--- */
 .ul-wrapper {
     padding: 1rem 0;
-    max-height: 50vh;
+    max-height: 30vh;
     overflow-x: hidden;
 }
 
@@ -334,6 +334,10 @@ ul {
 
 
 /* ---> FOOTER <--- */
+footer {
+    width: 100%;
+}
+
 .bottom-svg {
     bottom: 0;
     left: 0;
@@ -342,10 +346,13 @@ ul {
 .signature {
     position: absolute;
     bottom: .225rem;
+    margin: 0;
+    padding: 0;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    color: var(--secondary)
+    color: var(--secondary);
+    width: 100%;
 }
 
 
