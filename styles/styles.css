@@ -241,7 +241,7 @@ input[type="text"]::placeholder {
 /* ---> TASKS SECTION <--- */
 .ul-wrapper {
     padding: 1rem 0;
-    max-height: 30vh;
+    max-height: 40vh;
     overflow-x: hidden;
 }
 
@@ -335,27 +335,27 @@ ul {
 
 /* ---> FOOTER <--- */
 footer {
+    z-index: 6;
     width: 100%;
 }
 
 .bottom-svg {
+    z-index: 6;
     bottom: 0;
     left: 0;
 }
 
 .signature {
+    z-index: 6;
     position: absolute;
     bottom: .225rem;
     margin: 0;
     padding: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
     text-align: center;
     color: var(--secondary);
     width: 100%;
 }
-
-
 
 @media all and (min-width: 500px) {
   .logo {
