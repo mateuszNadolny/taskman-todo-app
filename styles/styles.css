@@ -347,7 +347,7 @@ footer {
 
 .signature {
     z-index: 6;
-    position: absolute;
+    position: fixed;
     bottom: .225rem;
     margin: 0;
     padding: 0;
@@ -355,6 +355,12 @@ footer {
     text-align: center;
     color: var(--secondary);
     width: 100%;
+}
+
+@media all and (max-height: 430px) {
+    footer, .bottom-svg, .signature, .ul-wrapper {
+        visibility: hidden;
+    }
 }
 
 @media all and (min-width: 500px) {
