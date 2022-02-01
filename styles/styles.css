@@ -340,7 +340,7 @@ ul {
 }
 
 .signature {
-    position: fixed;
+    position: absolute;
     bottom: .225rem;
     left: 50%;
     transform: translateX(-50%);
