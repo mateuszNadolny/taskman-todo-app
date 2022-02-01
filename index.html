@@ -1,83 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/styles.css">
-    <!-- <script defer src="scripts/buttonHandlerScript.js"></script> -->
     <script src="scripts/app.js" defer></script>
+    <script src="scripts/userInterface.js" defer></script>
     <title>taskman</title>
 </head>
 
-<body>
+<body data-mode="light">
+
+    
 
     <header>
-        <h2 class="header">taskman</h2>
-        <div class="add-task-div">
-            <button class="render-adding-task-btn">+</button>
-            <p class="add-task-paragraph">add new task</p>
+        <svg class="top-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill-opacity="1" d="M0,224L80,224C160,224,320,224,480,202.7C640,181,800,139,960,112C1120,85,1280,75,1360,69.3L1440,64L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path></svg>
+        <div class="header-elements">
+            <h2 class="logo">taskman</h2>
+            <div class="toggle">
+                <input type="checkbox" class="theme-checkbox">
+                <label for="" class="light-btn">light</label>
+                <label for="" class="dark-btn">dark</label>
+            </div>
         </div>
     </header>
 
     <main>
-        <div class="adding-task-wrapper">
-            <div class="adding-task-input-wrapper">
-                <input class="adding-task-input mobile-adding-task-input" type="text" placeholder="let's do something exciting!" maxlength="50">
+        <section class="operable-section">
+            <div class="filter-wrapper">
+                <button data-type="all" class="filter-btn all-btn active-filter">all</button>
+                <button data-type="active" class="filter-btn active-btn">active</button>
+                <button data-type="completed" class="filter-btn completed-btn">completed</button>
             </div>
-            <div class="operating-btns">
-                <button class="add-btn operating-task-btn mobile-add-btn">add</button>
-                <button class="cancel-btn operating-task-btn ">cancel</button>
+            <div class="text-input-wrapper">
+                <input class="user-input" type="text" placeholder="let's do something exciting!" max="40">
+                <button class="add-task-btn">+</button>
             </div>
-        </div>
-
-        <div class="side-menu">
-            <h2 class="side-logo header">taskman</h2>
-            <div class="side-adding-task-wrapper">
-                <input class="adding-task-input desktop-adding-task-input side-adding-task-input side-menu-element" type="text"
-                    placeholder="let's do something exciting!" maxlength="50">
-                <button class="side-adding-task-btn add-btn side-menu-element">add new task</button>
+            <div class="popup popup-disabled">
+                <p class="popup-text"></p>
             </div>
-
-            <div class="side-filter-btns">
-                <button data-type="all" class="filter-all filter-btn active side-filter-btn side-menu-element">view all</button>
-                <button data-type="active" class="filter-active filter-btn side-filter-btn side-menu-element">view active</button>
-                <button data-type="completed" class="filter-completed filter-btn side-filter-btn side-menu-element"> view completed</button>
-                <button class="filter-delete-p side-filter-delete side-filter-btn side-menu-element">clear completed</button>
-
-            </div>
-            <p class="signature desktop-signature">designed & coded by <a href="https://github.com/mateuszNadolny"
-                    target="_blank">mateuszNadolny</a></p>
-        </div>
-
-        <div class="tasks-wrapper">
-            <ul class="tasks-ul">
-                <template class="temp-li">
-                    <li class="tasks-li visible">
-                        <button class="tasks-checkbox "></button>
-                        <p class="tasks-paragraph "></p>
-                    </li>
-                </template>
+        </section>
+    
+        <section class="ul-wrapper">
+            <ul>
             </ul>
-        </div>
-
-        <div class="filter-wrapper">
-            <p data-type="all" class="filter-all filter-btn active">all</p>
-            <p data-type="active" class="filter-active filter-btn">active</p>
-            <p data-type="completed" class="filter-completed filter-btn">completed</p>
-            <div class="filter-delete-div">
-                <p class="filter-delete-p">delete completed</p>
-            </div>
-
-        </div>
+        </section>
 
         <footer>
-            <p class="signature mobile-signature">designed & coded by <a href="https://github.com/mateuszNadolny"
-                    target="_blank">mateuszNadolny</a></p>
+            <svg class="bottom-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill-opacity="1" d="M0,32L80,74.7C160,117,320,203,480,202.7C640,203,800,117,960,106.7C1120,96,1280,160,1360,192L1440,224L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>
+            <p class="signature">designed & coded by <a href="https://github.com/mateuszNadolny">mateuszNadolny</a></p>
         </footer>
     </main>
-
 </body>
-
 </html>
